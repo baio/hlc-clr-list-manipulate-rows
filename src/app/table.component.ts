@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Table, TableDescription, HlcClrTableComponent } from '@ng-holistic/clr-list';
 import { Subject, timer } from 'rxjs';
@@ -49,7 +49,8 @@ const dataProvider: Table.Data.DataProvider = {
     <hlc-clr-table [table]="table" [dataProvider]="dataProvider" (rowAction)="onRowAction($event)"></hlc-clr-table>
   `,
   styleUrls: ['./table.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent {
 
@@ -69,13 +70,13 @@ export class TableComponent {
     })
   }
 
-  onRowAction(action: Table.RowActionEvent) {
-    if (action.action.id === 'edit') {
-      const row = this.hlcTable.rows.find(f => f.id === action.row.id);
+  onRowAction(evt: Table.RowActionEvent) {
+    if (evt.action.id === 'edit') {
+      const row = this.hlcTable.rows.find(f => f.id === evt.row.id);
       const updRow = { ...row, title: 'updated' };
       this.hlcTable.upadteRow(updRow);
-    } else if (action.action.id === 'remove') {
-      this.hlcTable.removeRow(action.row);
+    } else if (evt.action.id === 'remove') {
+      this.hlcTable.removeRow(evt.row);
     }
   }
 }
