@@ -5,7 +5,7 @@ import { Subject, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
 // Provide table UI definition in js object
-const table: TableDescription = {
+const definition: Table.Definition = {
   cols: [
     {
       id: 'title',
@@ -46,7 +46,7 @@ const dataProvider: Table.Data.DataProvider = {
   selector: 'my-table',
   template: `
     <button class="btn" (click)="onAdd()">Add Row</button>
-    <hlc-clr-table [table]="table" [dataProvider]="dataProvider" (rowAction)="onRowAction($event)"></hlc-clr-table>
+    <hlc-clr-table [definition]="definition" [dataProvider]="dataProvider" (rowAction)="onRowAction($event)"></hlc-clr-table>
   `,
   styleUrls: ['./table.component.scss'],
   providers: [DatePipe],
@@ -56,10 +56,9 @@ export class TableComponent {
 
   @ViewChild(HlcClrTableComponent, { static: false }) hlcTable: HlcClrTableComponent;
 
-  readonly table: TableDescription;
+  readonly definition = definition;
   dataProvider = dataProvider;
   constructor(datePipe: DatePipe) {
-    this.table = table;
   }
 
   onAdd() {
